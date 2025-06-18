@@ -1,0 +1,85 @@
+@model OnlineShop.Models.Order
+
+@{
+    ViewData["Title"] = "Оформлення замовлення";
+}
+
+<h1>Оформлення замовлення</h1>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-warning">@TempData["Message"]</div>
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Ваші дані</h4>
+        <form asp-action="PlaceOrder" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CustomerName" class="control-label">Ваше ім'я</label> 
+                <input asp-for="CustomerName" class="form-control" placeholder="Введіть ваше ім'я" /> 
+                <span asp-validation-for="CustomerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerEmail" class="control-label">Ваш Email</label> 
+                <input asp-for="CustomerEmail" class="form-control" placeholder="Введіть ваш Email" /> 
+                <span asp-validation-for="CustomerEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerPhone" class="control-label">Ваш телефон</label> 
+                <input asp-for="CustomerPhone" class="form-control" placeholder="Введіть ваш номер телефону" /> 
+                <span asp-validation-for="CustomerPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingAddress" class="control-label">Адреса доставки</label> 
+                <textarea asp-for="ShippingAddress" class="form-control" placeholder="Введіть адресу доставки"></textarea> 
+                <span asp-validation-for="ShippingAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Підтвердити замовлення" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <h4>Ваше замовлення</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Продукт</th>
+                    <th>Кількість</th>
+                    <th>Ціна</th>
+                    <th>Сума</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.OrderItems != null && Model.OrderItems.Any())
+                {
+                    @foreach (var item in Model.OrderItems)
+                    {
+                        <tr>
+                            <td>@item.Product.Name</td>
+                            <td>@item.Quantity</td>
+                            <td>@(item.Price.ToString("C"))</td> 
+                            <td>@((item.Quantity * item.Price).ToString("C"))</td> 
+                        </tr>
+                    }
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-right"><strong>Загальна сума:</strong></td>
+                    <td><strong>@Model.TotalAmount.ToString("C")</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-controller="Cart">Повернутися до кошика</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

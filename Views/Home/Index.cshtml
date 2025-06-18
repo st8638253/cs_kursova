@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Ласкаво просимо!";
+}
+
+<div class="container my-5">
+    <div class="text-center">
+        <h1 class="display-4 mb-4">Ласкаво просимо до нашого Онлайн-магазину!</h1>
+        <p class="lead">
+            Відкрийте для себе широкий асортимент високоякісних товарів за найкращими цінами.
+            Ми прагнемо зробити ваш шопінг зручним та приємним.
+        </p>
+    </div>
+
+    <hr class="my-5" />
+
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Широкий асортимент</h5>
+                    <p class="card-text">
+                        Перегляньте наш каталог товарів, що постійно оновлюється, та знайдіть саме те, що вам потрібно.
+                    </p>
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-primary mt-3">Переглянути товари</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 text-center">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Зручна доставка</h5>
+                    <p class="card-text">
+                        Ми забезпечуємо швидку та надійну доставку по всій Україні, щоб ваші покупки прибули вчасно.
+                    </p>
+                    <a asp-controller="Home" asp-action="Privacy" class="btn btn-outline-secondary mt-3">Детальніше про доставку</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 text-center">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Надійна підтримка</h5>
+                    <p class="card-text">
+                        Наша команда завжди готова відповісти на ваші запитання та допомогти з будь-якими проблемами.
+                    </p>
+                    <a href="mailto:support@onlineshop.com" class="btn btn-outline-info mt-3">Зв'язатися з нами</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-5">
+        <h2>Почніть свій шопінг вже зараз!</h2>
+        <a asp-controller="Product" asp-action="Index" class="btn btn-success btn-lg mt-3">До каталогу товарів</a>
+    </div>
+
+</div>

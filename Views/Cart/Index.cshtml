@@ -1,0 +1,83 @@
+@model List<OnlineShop.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Кошик";
+}
+
+<h1>Ваш Кошик</h1>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-warning">@TempData["Message"]</div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Ваш кошик порожній. <a asp-controller="Product" asp-action="Index">Перейти до товарів</a>
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Продукт</th>
+                <th>Ціна</th>
+                <th>Кількість</th>
+                <th>Сума</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Product.Price.ToString("C")</td> 
+                    <td>
+                        <form asp-controller="Cart" asp-action="UpdateCartItemQuantity" method="post" class="d-flex align-items-center">
+                            <input type="hidden" name="productId" value="@item.ProductId" />
+                            <input type="number" name="quantity" value="@item.Quantity" min="1" class="form-control" style="width: 70px;" onchange="this.form.submit()" />
+                        </form>
+                    </td>
+                    <td>@((item.Product.Price * item.Quantity).ToString("C"))</td>
+                    <td>
+                        <form asp-controller="Cart" asp-action="RemoveFromCart" method="post" style="display:inline;">
+                            <input type="hidden" name="productId" value="@item.ProductId" />
+                            <button type="submit" class="btn btn-danger btn-sm">Видалити</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="text-end"><strong>Загальна сума:</strong></td> 
+                
+                <td><strong>@Model.Sum((OnlineShop.Models.CartItem item) => item.Product.Price * item.Quantity).ToString("C")</strong></td>
+                
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+    <div class="text-end mt-4"> 
+        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary me-2">Продовжити покупки</a>
+
+        
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a asp-controller="Order" asp-action="Checkout" class="btn btn-primary">Оформити замовлення</a>
+        }
+        else
+        {
+            
+            <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Context.Request.Path" class="btn btn-primary">Вхід для оформлення замовлення</a>
+        }
+        
+    </div>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,81 @@
+@model OnlineShop.Models.Order
+
+    @{
+        ViewData["Title"] = "Замовлення підтверджено";
+    }
+
+    <h1>Замовлення підтверджено!</h1>
+
+    @if (TempData["OrderPlaced"] != null)
+    {
+        <div class="alert alert-success">@TempData["OrderPlaced"]</div>
+    }
+
+    <div>
+        <h4>Деталі замовлення №@Model.Id</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">
+                Ім'я замовника:
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.CustomerName)
+            </dd>
+            <dt class="col-sm-3">
+                Email:
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.CustomerEmail)
+            </dd>
+            <dt class="col-sm-3">
+                Телефон:
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.CustomerPhone)
+            </dd>
+            <dt class="col-sm-3">
+                Адреса доставки:
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.ShippingAddress)
+            </dd>
+            <dt class="col-sm-3">
+                Дата замовлення:
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.OrderDate)
+            </dd>
+            <dt class="col-sm-3">
+                Загальна сума:
+            </dt>
+            <dd class="col-sm-9">
+                @Model.TotalAmount.ToString("C")
+            </dd>
+        </dl>
+
+        <h5>Товари в замовленні:</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Продукт</th>
+                    <th>Кількість</th>
+                    <th>Ціна за одиницю</th>
+                    <th>Сума</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderItems)
+                {
+                    <tr>
+                        <td>@item.Product.Name</td>
+                        <td>@item.Quantity</td>
+                        <td>@(item.Price.ToString("C"))</td>
+                        <td>@((item.Quantity * item.Price).ToString("C"))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <a asp-controller="Product" asp-action="Index">Повернутися до магазину</a>
+    </div>
